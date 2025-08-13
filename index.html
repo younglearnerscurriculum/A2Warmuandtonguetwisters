@@ -1,79 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Level 2 Interactive Widgets (16:9 with Regenerate)</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 2 Warm-Up + Tongue Twisters</title>
   <style>
-    /* Full-screen flex layout */
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      width: 100vw;
-    }
     body {
-      display: flex;
-      flex-direction: column;
       background: #e6f7ff;
       font-family: 'Comic Sans MS', cursive, sans-serif;
+      margin: 0;
+      padding: 0;
     }
-
-    /* 16:9 container */
-    .screen {
-      flex: 1;
+    .container {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      align-items: center;
-      padding: 1rem;
-      box-sizing: border-box;
+      gap: 20px;
+      padding: 20px;
     }
-    .widgets-container {
-      display: flex;
-      gap: 2rem;
-      width: 100%;
-      height: 100%;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Shared widget styling */
     .widget {
+      flex: 1 1 500px;
+      max-width: 540px;
+      padding: 1.5rem;
       background: #fff;
       border: 3px dashed #87cefa;
       border-radius: 12px;
       box-shadow: 0 6px 10px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-      flex: 1 1 40%;
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
     }
-    .widget h2 {
-      margin: 0 0 1rem;
+    h2 {
+      margin: 0;
       padding: 0.75rem;
       background: linear-gradient(90deg, #87cefa, #00bfff);
       color: #fff;
       text-align: center;
       border-radius: 8px;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
     }
-    .widget label {
+    label {
       margin-top: 1rem;
+      display: block;
       font-weight: bold;
       color: #333;
       font-size: 1.1rem;
     }
-    .widget input {
+    input {
       width: 100%;
       padding: 0.6rem;
       margin-top: 0.3rem;
       border-radius: 6px;
       border: 2px solid #87cefa;
       font-size: 1rem;
-      box-sizing: border-box;
     }
-    .widget button {
+    button {
       width: 100%;
       padding: 0.8rem;
       margin-top: 0.8rem;
@@ -85,137 +63,195 @@
       cursor: pointer;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     }
-    .widget button:hover {
+    button:hover {
       background: #1e90ff;
     }
-    .widget ul {
+    ul {
       margin-top: 1rem;
       padding-left: 0;
       list-style: none;
-      flex: 1;
-      overflow-y: auto;
     }
-    .widget li {
+    li {
       margin: 0.6rem 0;
       padding: 0.6rem;
       border-radius: 6px;
-      font-size: 1.15rem;
+      font-size: 1.18rem;
       display: flex;
       align-items: center;
-      background: #f0f8ff;
     }
-    .widget li:nth-child(even) {
-      background: #e8f8ff;
-    }
+    .questions li:nth-child(odd) { background: #f0f8ff; }
+    .questions li:nth-child(even) { background: #e8f8ff; }
+    .twisters li { background: #f0f8ff; }
     .emoji {
       margin-right: 0.6rem;
       font-size: 1.4rem;
     }
-
-    /* Footer at bottom */
-    footer {
-      background: #fff;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #555;
-      border-top: 1px solid #ddd;
-      flex-shrink: 0;
-    }
   </style>
 </head>
 <body>
-  <div class="screen">
-    <div class="widgets-container">
 
-      <!-- Warm-Up Question Randomizer -->
-      <div class="widget" id="randomizer">
-        <h2>✨ Level 2 Warm-Up Questions!</h2>
-        <div id="controls-questions">
-          <label for="num">How many questions (max 5):</label>
-          <input type="number" id="num" min="1" max="5" value="5"/>
-          <button id="gen-questions">✨ Generate!</button>
-        </div>
-        <ul id="questions"></ul>
-        <button id="regen-questions" style="display:none; margin-top:1rem;">✨ Generate Again</button>
-      </div>
-
-      <!-- Tongue Twister Generator -->
-      <div class="widget" id="twister-generator">
-        <h2>✨ Level 2 Tongue Twisters!</h2>
-        <div id="controls-twisters">
-          <label for="count">How many twisters? (max 5):</label>
-          <input type="number" id="count" min="1" max="5" value="1"/>
-          <button id="gen-twisters">✨ Generate!</button>
-        </div>
-        <ul id="twisters"></ul>
-        <button id="regen-twisters" style="display:none; margin-top:1rem;">✨ Generate Again</button>
-      </div>
-
-    </div>
+<div class="container">
+  <!-- Warm-Up Questions -->
+  <div class="widget">
+    <h2>✨ Level 2 Warm-Up Questions!</h2>
+    <label for="num">How many questions? (max 5):</label>
+    <input type="number" id="num" min="1" max="5" value="5" />
+    <button onclick="showRandomQuestions()">✨ Generate!</button>
+    <ul id="questions" class="questions"></ul>
   </div>
 
-  <footer>
-    © 2025 Young Learners Curriculum. All rights reserved.
-  </footer>
+  <!-- Tongue Twisters -->
+  <div class="widget">
+    <h2>✨ Level 2 Tongue Twisters!</h2>
+    <label for="count">How many twisters? (max 5):</label>
+    <input type="number" id="count" min="1" max="5" value="1" />
+    <button onclick="showTwisters()">✨ Generate!</button>
+    <ul id="twisters" class="twisters"></ul>
+  </div>
+</div>
 
-  <script>
-    // Warm-Up Questions Data & Emojis
-    const questionsArray = [ /* …existing questions… */ ];
-    const qEmojis = ['🌟','🚴','🍓','🎨','📖','🚌','☀️','⛄','🎂','🐛'];
+<script>
+  // ===== Warm-Up Questions Array =====
+  const questionsArray = [
+    "What did you do yesterday?",
+    "What are you going to do tomorrow?",
+    "Can you describe your best friend?",
+    "What is your favorite game and why?",
+    "How do you get to school each day?",
+    "What is your favorite animal and what color is it?",
+    "Can you tell me about your breakfast this morning?",
+    "What is your favorite cartoon?",
+    "Do you like swimming? Why or why not?",
+    "What is your favorite subject at school?",
+    "Can you name three things in your room?",
+    "What do you like to do after school?",
+    "Describe your family members.",
+    "What is the weather like today?",
+    "What is your favorite season and why?",
+    "Can you talk about your favorite storybook?",
+    "What do you eat when you are hungry?",
+    "What is your favorite color combination?",
+    "Can you count to twenty?",
+    "Do you prefer cats or dogs?",
+    "What is your favorite fruit and how does it taste?",
+    "What time do you go to sleep at night?",
+    "Can you name five school supplies?",
+    "What did you learn in class today?",
+    "Describe your school uniform.",
+    "What is your favorite snack and why?",
+    "Can you tell me your morning routine?",
+    "What sport do you like to play?",
+    "Who is your favorite teacher and why?",
+    "What can you see outside your window?",
+    "What is your favorite song? Can you sing a line?",
+    "Describe your favorite playground activity.",
+    "What do you like to draw when you are happy?",
+    "What sound does a cow make?",
+    "What is the last movie you watched?",
+    "How do you feel today?",
+    "What makes you laugh?",
+    "What do you want to be when you grow up?",
+    "What is your birthday? How do you celebrate?",
+    "Can you spell your name?",
+    "What do you wear when it’s cold?",
+    "What color are your eyes?",
+    "What do you do on sunny days?",
+    "How many pets would you like to have?",
+    "What is your favorite vegetable?",
+    "Can you tell a joke?",
+    "What is your favorite holiday?",
+    "How do you help at home?",
+    "What is your favorite TV show?",
+    "What do you like to do with your family?",
+    "What makes you excited?"
+  ];
 
-    function showRandomQuestions() {
-      const num = Math.max(1, Math.min(5, parseInt(document.getElementById('num').value, 10) || 5));
-      const copy = [...questionsArray];
-      const list = document.getElementById('questions');
-      list.innerHTML = '';
-      for (let i=0; i<num && copy.length; i++) {
-        const idx = Math.floor(Math.random()*copy.length);
-        const question = copy.splice(idx,1)[0];
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="emoji">${qEmojis[Math.floor(Math.random()*qEmojis.length)]}</span>${question}`;
-        list.appendChild(li);
-      }
-      document.getElementById('controls-questions').style.display = 'none';
-      document.getElementById('regen-questions').style.display = 'block';
+  // ===== Tongue Twisters Array =====
+  const twisters = [
+    "She sells seashells by the seashore.",
+    "Peter Piper picked a peck of pickled peppers.",
+    "How much wood would a woodchuck chuck if a woodchuck could chuck wood?",
+    "I scream, you scream, we all scream for ice cream.",
+    "Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair.",
+    "Can you can a can as a canner can can a can?",
+    "Six slippery snails slid slowly seaward.",
+    "Red lorry, yellow lorry.",
+    "Unique New York.",
+    "Eleven benevolent elephants.",
+    "Betty Botter bought some butter, but she said the butter’s bitter.",
+    "Fred fed Ted bread, and Ted fed Fred bread.",
+    "Friendly fleas and fireflies.",
+    "A proper copper coffee pot.",
+    "Which wristwatches are Swiss wristwatches?",
+    "Mix a box of mixed biscuits with a boxed biscuit mixer.",
+    "Six sticky skeletons.",
+    "Thin sticks, thick bricks.",
+    "Brisk brave brigadiers brandished broad bright blades.",
+    "If Stu chews shoes, should Stu choose the shoes he chews?",
+    "Irish wristwatch, Swiss wristwatch.",
+    "Toy boat, toy boat, toy boat.",
+    "Lesser leather never weathered wetter weather better.",
+    "Black background, brown background.",
+    "Chester Cheetah chewed a chunk of cheap cheddar cheese.",
+    "Truly rural.",
+    "Six sleek swans swam swiftly southwards.",
+    "Susie works in a shoeshine shop.",
+    "Three free throws.",
+    "Four furious friends fought for the phone.",
+    "Betty bought a bit of butter but the butter Betty bought was bitter.",
+    "Mad cow cower, mad cow cower.",
+    "Round and round the rugged rock the ragged rascal ran.",
+    "Fresh fried fish.",
+    "Cooks cook cupcakes quickly.",
+    "Chubby children chase cheerful cheetahs.",
+    "Five frantic frogs freezing on a frigid floor.",
+    "Six squirrels swiftly scampered south.",
+    "Ten tiny turtles trotted to town.",
+    "Giggling girls gently gathered golden grapes.",
+    "Busy buzzing bees beautiful busy.",
+    "Willy’s real rear wheel.",
+    "Red bulls boldly battle blue bulls.",
+    "Two tiny tigers take two taxis to town.",
+    "A dozen double damask dishes.",
+    "Green great grass grows.",
+    "Live on time, emit no evil.",
+    "Selfish shellfish.",
+    "Any noise annoys an oyster but a noisy noise annoys an oyster more.",
+    "A proper copper coffee pot.",
+    "We surely shall see the sun shine soon.",
+    "Which witch switched the Swiss wristwatches?"
+  ];
+
+  // ===== Shared Emojis =====
+  const emojis = ['🌟','🚴','🍓','🎨','📖','🚌','☀️','⛄','🎂','🐛'];
+
+  // ===== Functions =====
+  function showRandomQuestions() {
+    const num = Math.min(5, Math.max(1, parseInt(document.getElementById('num').value, 10) || 5));
+    const copy = [...questionsArray];
+    const list = document.getElementById('questions');
+    list.innerHTML = '';
+    for (let i = 0; i < num && copy.length > 0; i++) {
+      const idx = Math.floor(Math.random() * copy.length);
+      const question = copy.splice(idx, 1)[0];
+      const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+      list.innerHTML += `<li><span class="emoji">${emoji}</span>${question}</li>`;
     }
+  }
 
-    function resetQuestions() {
-      document.getElementById('questions').innerHTML = '';
-      document.getElementById('controls-questions').style.display = 'block';
-      document.getElementById('regen-questions').style.display = 'none';
+  function showTwisters() {
+    const n = Math.min(5, Math.max(1, parseInt(document.getElementById('count').value, 10) || 1));
+    const copy = [...twisters];
+    const list = document.getElementById('twisters');
+    list.innerHTML = '';
+    for (let i = 0; i < n && copy.length > 0; i++) {
+      const idx = Math.floor(Math.random() * copy.length);
+      const tt = copy.splice(idx, 1)[0];
+      const em = emojis[Math.floor(Math.random() * emojis.length)];
+      list.innerHTML += `<li><span class="emoji">${em}</span>${tt}</li>`;
     }
+  }
+</script>
 
-    // Tongue Twisters Data & Emojis
-    const twisters = [ /* …existing twisters… */ ];
-    const tEmojis = ['🌟','🚴','🍓','🎨','📖','🚌','☀️','⛄','🎂','🐛'];
-
-    function showTwisters() {
-      const num = Math.max(1, Math.min(5, parseInt(document.getElementById('count').value, 10) || 1));
-      const copy = [...twisters];
-      const list = document.getElementById('twisters');
-      list.innerHTML = '';
-      for (let i=0; i<num && copy.length; i++) {
-        const idx = Math.floor(Math.random()*copy.length);
-        const t = copy.splice(idx,1)[0];
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="emoji">${tEmojis[Math.floor(Math.random()*tEmojis.length)]}</span>${t}`;
-        list.appendChild(li);
-      }
-      document.getElementById('controls-twisters').style.display = 'none';
-      document.getElementById('regen-twisters').style.display = 'block';
-    }
-
-    function resetTwisters() {
-      document.getElementById('twisters').innerHTML = '';
-      document.getElementById('controls-twisters').style.display = 'block';
-      document.getElementById('regen-twisters').style.display = 'none';
-    }
-
-    document.getElementById('gen-questions').addEventListener('click', showRandomQuestions);
-    document.getElementById('regen-questions').addEventListener('click', resetQuestions);
-    document.getElementById('gen-twisters').addEventListener('click', showTwisters);
-    document.getElementById('regen-twisters').addEventListener('click', resetTwisters);
-  </script>
 </body>
 </html>
